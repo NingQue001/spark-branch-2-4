@@ -28,7 +28,7 @@ import org.apache.spark.storage.BlockManagerMessages._
 import org.apache.spark.util.{RpcUtils, ThreadUtils}
 
 private[spark]
-class BlockManagerMaster(
+class BlockManagerMaster( // BlockManagerMaster处于Driver中，主要是控制Block的元数据
     var driverEndpoint: RpcEndpointRef,
     conf: SparkConf,
     isDriver: Boolean)
