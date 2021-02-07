@@ -113,6 +113,7 @@ abstract class RDD[T: ClassTag](
    * :: DeveloperApi ::
    * Implemented by subclasses to compute a given partition.
    */
+  // 每个分区都会有一个计算函数
   @DeveloperApi
   def compute(split: Partition, context: TaskContext): Iterator[T]
 
@@ -137,6 +138,9 @@ abstract class RDD[T: ClassTag](
   protected def getPreferredLocations(split: Partition): Seq[String] = Nil
 
   /** Optionally overridden by subclasses to specify how they are partitioned. */
+  /**
+   * 分区器
+   */
   @transient val partitioner: Option[Partitioner] = None
 
   // =======================================================================

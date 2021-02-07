@@ -874,6 +874,8 @@ private[spark] class DAGScheduler(
   /**
    * Resubmit any failed stages. Ordinarily called after a small amount of time has passed since
    * the last fetch failure.
+   *
+   * Stage输出失败，则调用该方法重新提交
    */
   private[scheduler] def resubmitFailedStages() {
     if (failedStages.size > 0) {

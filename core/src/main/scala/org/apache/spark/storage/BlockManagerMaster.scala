@@ -28,7 +28,7 @@ import org.apache.spark.storage.BlockManagerMessages._
 import org.apache.spark.util.{RpcUtils, ThreadUtils}
 
 private[spark]
-class BlockManagerMaster( // BlockManagerMaster处于Driver中，主要是控制Block的元数据
+class BlockManagerMaster( // BlockManagerMaster处于Driver中，主要是控制Block的元数据(位置，存储空间等）
     var driverEndpoint: RpcEndpointRef,
     conf: SparkConf,
     isDriver: Boolean)
@@ -55,7 +55,7 @@ class BlockManagerMaster( // BlockManagerMaster处于Driver中，主要是控制
    * topology information. This information is obtained from the master and we respond with an
    * updated BlockManagerId fleshed out with this information.
    */
-  def registerBlockManager(
+  def registerBlockManager( // 观察者模式？？
       blockManagerId: BlockManagerId,
       maxOnHeapMemSize: Long,
       maxOffHeapMemSize: Long,

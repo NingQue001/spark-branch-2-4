@@ -67,7 +67,7 @@ private[spark] class CoarseGrainedExecutorBackend(
         // Always receive `true`. Just ignore it
       case Failure(e) =>
         exitExecutor(1, s"Cannot register with driver: $driverUrl", e, notifyDriver = false)
-    }(ThreadUtils.sameThread)
+    }(ThreadUtils.sameThread)  // 这里是什么神仙玩法？？？(ThreadUtils.sameThread)
   }
 
   def extractLogUrls: Map[String, String] = {
@@ -77,6 +77,7 @@ private[spark] class CoarseGrainedExecutorBackend(
   }
 
   override def receive: PartialFunction[Any, Unit] = {
+    // 注册executor
     case RegisteredExecutor =>
       logInfo("Successfully registered with driver")
       try {
@@ -89,13 +90,14 @@ private[spark] class CoarseGrainedExecutorBackend(
     case RegisterExecutorFailed(message) =>
       exitExecutor(1, "Slave registration failed: " + message)
 
-    case LaunchTask(data) =>
+    case LaunchTask(data) => // 启动Task
       if (executor == null) {
         exitExecutor(1, "Received LaunchTask command but executor was null")
       } else {
+        // 反序列化TaskDescription
         val taskDesc = TaskDescription.decode(data.value)
         logInfo("Got assigned task " + taskDesc.taskId)
-        executor.launchTask(this, taskDesc)
+        executor.launchTask(this, taskDesc) // 执行task
       }
 
     case KillTask(taskId, _, interruptThread, reason) =>

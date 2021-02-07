@@ -27,6 +27,9 @@ import org.apache.spark.{ShuffleDependency, TaskContext}
  * NOTE: this will be instantiated by SparkEnv so its constructor can take a SparkConf and
  * boolean isDriver as parameters.
  */
+/**
+ * 宽依赖（groupByKey，sortByKey等操作产生）意味者shuffleManager
+ */
 private[spark] trait ShuffleManager {
 
   /**
