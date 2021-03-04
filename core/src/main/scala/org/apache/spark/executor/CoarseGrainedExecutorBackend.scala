@@ -76,6 +76,7 @@ private[spark] class CoarseGrainedExecutorBackend(
       .map(e => (e._1.substring(prefix.length).toLowerCase(Locale.ROOT), e._2))
   }
 
+  /*TODO 接收其它工作进程发送的事件消息，并做出对应的响应 */
   override def receive: PartialFunction[Any, Unit] = {
     // 注册executor
     case RegisteredExecutor =>
